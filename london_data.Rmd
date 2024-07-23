@@ -1,0 +1,186 @@
+---
+title: "London_data_analysis"
+author: "S18_825"
+date: "2024-01-30"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(janitor)
+library(tinytex)
+library(ggplot2)
+library(magrittr)
+library(tidyverse)
+library(dplyr)
+```
+```{r}
+library(skimr)
+```
+
+
+```{r}
+london_data_1=read_csv("../Data/london_local_data_2022.csv")
+london_data_2=read.csv("../Data/london_local_sites.csv")
+head(london_data_1)
+head(london_data_2)
+```
+```{r}
+london_data_1[is.na(london_data_1)]=0
+str(london_data_1)
+```
+
+```{r}
+london_data_1=london_data_1 %>% separate(date, into =c('year','time'),sep = 10) %>% separate(year,into=c('year','month','date'),sep = '-')
+head(london_data_1)
+```
+```{r}
+plot_1=london_data_1 %>%  ggplot(mapping = aes(y=nox,x=month)) +geom_boxplot(aes(fill=month))
+plot_1
+```
+
+
+```{r}
+plot_2=london_data_1 %>%  ggplot(mapping = aes(y=no2,x=month)) +geom_boxplot(aes(fill=month))
+plot_2
+```
+
+
+```{r}
+plot_3=london_data_1 %>%  ggplot(mapping = aes(y=no,x=month)) +geom_boxplot(aes(fill=month))
+plot_3
+```
+
+
+```{r}
+plot_4=london_data_1 %>%  ggplot(mapping = aes(x=pm10,y=month)) +geom_boxplot(aes(fill=month))
+plot_4
+```
+
+
+```{r}
+plot_5=london_data_1 %>%  ggplot(mapping = aes(y=o3,x=month)) +geom_boxplot(aes(fill=month))
+plot_5
+```
+
+
+```{r}
+plot_6=london_data_1 %>%  ggplot(mapping = aes(x=so2,y=month)) +geom_boxplot(aes(fill=month))
+plot_6
+```
+
+
+```{r}
+plot_8=london_data_1 %>%  ggplot(mapping = aes(x=pm2_5,y=month)) +geom_boxplot(aes(fill=month))
+plot_8
+```
+
+
+```{r}
+table_1=london_data_1 %>% group_by(month) %>% summarise(Total =sum(nox)+sum(no2)+sum(no)+sum(pm10)+sum(o3)+sum(pm2_5)+sum(so2))
+table_1
+```
+
+```{r}
+table_2=london_data_1 %>% group_by(site) %>% summarise(Total =sum(nox)+sum(no2)+sum(no)+sum(pm10)+sum(o3)+sum(pm2_5)+sum(so2))
+table_2
+```
+
+
+```{r}
+max(table_1$Total)
+min(table_1$Total)
+max(table_2$Total)
+min(table_2$Total)
+```
+
+```{r}
+glimpse(london_data_2)
+glimpse(london_data_1)
+```
+
+
+```{r}
+merged_london_data=merge(london_data_2,london_data_1,by="code")
+head(merged_london_data)
+```
+
+```{r}
+library(naniar)
+
+```
+```{r}
+colnames(merged_london_data)
+```
+
+
+```{r}
+merged_london_data=merged_london_data[, -2]
+colnames(merged_london_data)
+```
+
+
+```{r}
+summary(merged_london_data)
+```
+
+
+```{r}
+vis_miss(head(merged_london_data,10000))
+```
+```{r}
+glimpse(merged_london_data)
+```
+
+```{r}
+plot_9=merged_london_data %>%  ggplot(mapping = aes(x=code,y=so2)) +geom_boxplot()
+plot_9
+```
+
+
+```{r}
+table_3= merged_london_data %>% group_by(site.y) %>% summarise(nox=sum(nox),no2=sum(no2)
+          ,no=sum(no),pm10=sum(pm10),o3=sum(o3),pm2_5=sum(pm2_5),so2=sum(so2))
+                                                                         
+table_3                                                              
+```
+
+
+```{r}
+table_4= merged_london_data %>% group_by(month) %>% summarise(nox=sum(nox),no2=sum(no2)
+          ,no=sum(no),pm10=sum(pm10),o3=sum(o3),pm2_5=sum(pm2_5),so2=sum(so2))
+                                                                         
+table_4  
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
